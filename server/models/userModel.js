@@ -16,28 +16,26 @@ const userSchema = mongoose.Schema({
     gst: {
         type: String,
     },
-    address: {
-        state: {
-            type: String,
-            required: true
-        },
-        city: {
-            type: String,
-            required: true
-        },
-        zipcode: {
-            type: String,
-            required: true
-        },
-        street: {
-            type: String,
-            required: true
-        },
-        landmark: {
-            type: String,
-            required: true
-        },
-    }
+    state: {
+        type: String,
+        required: true
+    },
+    city: {
+        type: String,
+        required: true
+    },
+    zipcode: {
+        type: String,
+        required: true
+    },
+    street: {
+        type: String,
+        required: true
+    },
+    landmark: {
+        type: String,
+        required: true
+    },
 })
 
 module.exports = mongoose.model("User", userSchema)
