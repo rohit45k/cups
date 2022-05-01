@@ -30,7 +30,7 @@ const setUser = asyncHandler(async(req, res) => {
         name: name,
         email: email,
         phone: phone,
-        gst: gst || '',
+        gst: gst ,
         state: state,
         city: city,
         zipcode: zipcode,

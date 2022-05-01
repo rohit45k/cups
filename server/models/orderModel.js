@@ -2,16 +2,25 @@ const mongoose = require("mongoose")
 
 const orderSchema = mongoose.Schema({
     user_id: {
-        type: String
+        type: String,
+        required:true
     },
     cart_id: {
-        type: String
+        type: String,
+        required:true
     },
-    payemnt: {
-        type: String
+    payment: {
+        type: String,
+        default: "pending",
+        required:true
     },
+    delivered: {
+        type: Boolean,
+        default: false,
+        required:true
+    }
 }, {
-    timestamp: true
+    timestamps: true
 })
 
 module.exports = mongoose.model("Order", orderSchema)

@@ -15,6 +15,7 @@ const userSchema = mongoose.Schema({
     },
     gst: {
         type: String,
+        default: "0"
     },
     state: {
         type: String,

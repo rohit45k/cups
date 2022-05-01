@@ -21,6 +21,8 @@ app.use("/api/cart", require("./routes/cartRoutes"))
 
 app.use("/api/user", require("./routes/userRoutes"))
 
+app.use("/api/order", require("./routes/orderRoutes"))
+
 app.use(errorHandler)
 
 app.listen(port, (err) => {
