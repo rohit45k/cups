@@ -32,7 +32,7 @@ const ProductDetail = () => {
             prod_id: id,
             qty: quantity
         })
-        console.log(res);
+        localStorage.setItem("cart_id", res.data._id)
         navigate("/checkout")
     }
 
