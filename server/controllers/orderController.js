@@ -5,7 +5,7 @@ const Order = require("../models/orderModel")
 const getOrder = asyncHandler(async (req, res) => {
     if(!req.params.orderId) {
         res.status(400)
-        throw new Error("Please provide user id")
+        throw new Error("Please provide order id")
     }
 
     const order = await Order.findById(req.params.orderId)

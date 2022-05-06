@@ -23,6 +23,8 @@ app.use("/api/user", require("./routes/userRoutes"))
 
 app.use("/api/order", require("./routes/orderRoutes"))
 
+app.use("/api/payment", require("./routes/paymentRoutes"))
+
 app.use(errorHandler)
 
 app.listen(port, (err) => {

@@ -1,9 +1,18 @@
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import axios from "axios"
+
+const getUserData = async(user_id) => {
+    const user = await axios.get(`http://localhost:5000/api/user/${user_id}`)
+    return await user.data
+}
 
 const Checkout = () => {
 
-    const initialFormState = {
+    const navigate = useNavigate()
+
+
+    const initialFormState =  {
         name: "",
         email: "",
         phone: "",
@@ -12,8 +21,9 @@ const Checkout = () => {
         landmark: "",
         zipcode: "",
         city: "",
-        state: ""
+        state: "",
     }
+
     
     const [cart_id] = useState(localStorage.getItem("cart_id"))
     const [cart, setCart] = useState({})
@@ -21,6 +31,13 @@ const Checkout = () => {
     const [step, setStep] = useState("user")
 
     const [formData, setFormData] = useState(initialFormState)
+
+    useEffect(() => {
+        const user_id = localStorage.getItem("user_id") || null
+        if(user_id) {
+            getUserData(user_id).then(data => setFormData(data))
+        }
+    }, [])
 
     useEffect(() => {
         const fetchCart = async() => {
@@ -42,13 +59,38 @@ const Checkout = () => {
 
     const handleSubmit = async(e) => {
         e.preventDefault()
-        const res = await axios.post("http://localhost:5000/api/user", formData)
-        console.log(res);
-        localStorage.setItem("user_id", res.data._id)
+        const user_id = localStorage.getItem("user_id") || null;
+        if(!user_id) {
+            const res = await axios.post("http://localhost:5000/api/user", formData)
+            localStorage.setItem("user_id", res.data._id)
+        }
 
         setStep("payment")
     }
 
+    const onPaymentSuccess = async() => {
+        const user_id = localStorage.getItem("user_id");
+        const cart_id = localStorage.getItem("cart_id")
+        const res = await axios.post("http://localhost:5000/api/order", {
+            user_id: user_id,
+            cart_id: cart_id
+        })
+        localStorage.removeItem("cart_id")
+        const order_id = localStorage.getItem("order") || null
+        // if(order_id) {
+        //     localStorage.setItem("order", `${res.data._id} ${order_id}`)
+        // } else {
+        //     localStorage.setItem("order", res.data._id)
+        // }
+        localStorage.setItem("order", res.data._id)
+        console.log(order_id);
+        const paytm_res = await axios.post("http://localhost:5000/api/payment", {
+            user_id: user_id,
+            order_id: order_id
+        })
+        console.log(paytm_res);
+        navigate(`/checkout/success/${res.data._id}`)
+    }
 
     return (
         <div>
@@ -102,6 +144,8 @@ const Checkout = () => {
                     ) : (
                     <div>
                         <h1 className="text-3xl font-semibold">Payment here</h1>
+                        <button onClick={onPaymentSuccess}>Pay Success</button>
+                        <button>Pay Cancel</button>
                     </div>
                     )
                 }
